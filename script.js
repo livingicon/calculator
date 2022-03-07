@@ -32,11 +32,11 @@ let b = '';
 let func = '';
 let equalsArray = '';
 
-//FUNCTIONS
+//GENERAL FUNCTIONS
 function display(e) {
   if (displayNum.includes('.') === true && e.target.innerHTML === '.') {
     return;
-  } else if (displayNum.length < 16) {//revise this after CSS
+  } else if (displayNum.length < 12) {
     const displayContent = document.querySelector('#displayContent');
     displayNum.push(e.target.innerHTML);
     displayContent.textContent = displayNum.join('');
@@ -46,7 +46,7 @@ function display(e) {
 function displayKey(e) {
   if (displayNum.includes('.') === true && e.key === '.') {
     return;
-  } else if (displayNum.length < 16) {//revise this after CSS
+  } else if (displayNum.length < 12) {
     const displayContent = document.querySelector('#displayContent');
     displayNum.push(e.key);
     displayContent.textContent = displayNum.join('');
@@ -119,7 +119,6 @@ function equals() {
   operate(func, a, b);
   evaluation.length = 0;
   displayNum.length = 0;
-  displayNum.push(displayContent.textContent);
 }
 
 const operate = function(func, a, b) {
@@ -144,7 +143,19 @@ const operate = function(func, a, b) {
 };
 
 function roundAnswer(number) {
-  return Math.round(number * 1000000000000000) / 1000000000000000 //to 15 decimal places
+  if (number.toString().split('').length > 12 
+  && number.toString().split('')[0] === '-' 
+  && number.toString().split('').includes('.') === false) {
+    return number.toExponential(5);
+  } else if (number.toString().split('').length > 12 
+  && number.toString().split('').includes('.') === false) {
+    return number.toExponential(6);
+  } else if ((Math.round(number * 100000000000) / 100000000000)
+  .toString().split('').length > 12) {
+    return number.toExponential(6);
+  } else {
+    return Math.round(number * 100000000000) / 100000000000;
+  }
 }
   
 //BASIC MATH OPERATION FUNCTIONS
@@ -159,7 +170,7 @@ const multiply = function(a, b) {
 };
 const divide = function(a, b) {
   if (b === 0) {
-    return 'To INFINITY and BEYOND!';
+    return 'NOPE!';
   } else {
     return roundAnswer(a / b);
   }
