@@ -1,46 +1,75 @@
+body {
+  font-family: monospace;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: black;
+}
+
+h1 {
+  color: rgb(199, 199, 199);
+}
+
 #calculator {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-#calculator {
-  background-color: coral;
+  background-color: rgb(84, 107, 110);
+  max-width: 230px;
+  min-width: 230px;
+  padding: 22px;
+  border: solid rgb(56, 71, 73) 4px;
+  border-radius: 10px;
 }
 
 #displayBack {
   height: 50px;
-  width: 210px;
+  width: 212px;
   background-color: rgb(199, 199, 199);
-  border: solid black 1px;
+  border: solid rgb(56, 71, 73) 3px;
+  border-radius: 10px;
   text-align: right;
 }
 
+#displayContent {
+  font-size: 30px;
+  margin: 7px;
+  color: rgb(56, 71, 73);
+}
+
 #buttons {
-  max-width: 212px;
+  max-width: 226px;
+  padding-top: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 button {
   width: 50px;
   height: 50px;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 10px;
+  color:rgb(56, 71, 73);
+  border-style: none;
+  border-radius: 10px;
+  border: solid rgb(56, 71, 73) 3px;
+  margin: 3px;
 }
 
 .remove {
-  background-color: orange;
+  background-color: rgb(235, 116, 61);
 }
-
 .number {
-  background-color: white;
+  background-color: rgb(127, 137, 190);
 }
-
 .extra {
-  background-color: burlywood;
+  background-color: rgb(223, 139, 218);
 }
-
 .operation {
-  background-color: fuchsia;
+  background-color: rgb(226, 217, 94);
 }
-
 #equal {
-  background-color: rgb(197, 248, 121);
+  background-color: rgb(103, 201, 103);
 }
