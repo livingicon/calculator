@@ -1,6 +1,3 @@
-//decimal point ().tofixed(20);)?
-//keyboard friendly
-
 //NUMBER BUTTONS
 zero.addEventListener('click', display);
 one.addEventListener('click', display);
@@ -15,12 +12,6 @@ nine.addEventListener('click', display);
 decimal.addEventListener('click', display);
 numberSigns.addEventListener('click', negative);
 window.addEventListener('keydown', useKeys);
-
-function useKeys(e) {
-  if (e.key >= 0 && e.key <= 9) {
-    display(e);
-  }
-}
 
 //OPERATION BUTTONS
 addition.addEventListener('click', storeOperate);
@@ -39,15 +30,38 @@ let evaluation = [];
 let a = '';
 let b = '';
 let func = '';
+let equalsArray = '';
 
+//FUNCTIONS
 function display(e) {
   if (displayNum.includes('.') === true && e.target.innerHTML === '.') {
     return;
-  } else {
+  } else if (displayNum.length < 16) {//revise this after CSS
     const displayContent = document.querySelector('#displayContent');
-    //displayNum.push(e.key);
     displayNum.push(e.target.innerHTML);
     displayContent.textContent = displayNum.join('');
+  }
+}
+
+function displayKey(e) {
+  if (displayNum.includes('.') === true && e.key === '.') {
+    return;
+  } else if (displayNum.length < 16) {//revise this after CSS
+    const displayContent = document.querySelector('#displayContent');
+    displayNum.push(e.key);
+    displayContent.textContent = displayNum.join('');
+  }
+}
+
+function useKeys(e) {
+  if (e.key >= 0 && e.key <= 9 || e.key === '.') {
+    displayKey(e);
+  } if (e.key === "-" || e.key === '+' || e.key === '*' || e.key === '/') {
+    storeOperateKey(e);
+  } if (e.key === 'Enter') {
+    equals(e);
+  } if (e.key === 'Backspace') {
+    backspace(e);
   }
 }
 
@@ -75,6 +89,30 @@ function storeOperate(e) {
   }
 }
 
+function storeOperateKey(e) {
+  if (displayNum.length === 0 && e.code === 'NumpadSubtract') {
+    const displayContent = document.querySelector('#displayContent');
+    displayNum.push("-");
+    displayContent.textContent = displayNum.join('');
+  } else if (evaluation.length === 0) {
+    a = Number(displayContent.textContent);
+    evaluation.push(a);
+    func = e.code;
+    evaluation.push(func);
+    displayContent.textContent = e.key;
+    displayNum.length = 0;
+  } else if (evaluation.length === 2) {
+    b = Number(displayNum.join(''));
+    operate(func, a, b);
+    evaluation.length = 0;
+    a = Number(displayContent.textContent);
+    evaluation.push(a);
+    func = e.code;
+    evaluation.push(func);
+    displayNum.length = 0;
+  }
+}
+
 function equals() {
   b = Number(displayNum.join(''));
   evaluation.push(b);
@@ -84,68 +122,81 @@ function equals() {
   displayNum.push(displayContent.textContent);
 }
 
-//OPERATION FUNCTION
 const operate = function(func, a, b) {
-    switch(func) {
-      case 'addition':
-        displayContent.textContent = add(a, b);
-        break;
-      case 'subtraction':
-        displayContent.textContent = subtract(a, b);
-        break;
-      case 'multiplication':
-        displayContent.textContent = multiply(a, b);
-        break;
-      case 'division':
-        displayContent.textContent = divide(a, b);
-        break;
-    }
-  };
-  
-  //BASIC MATH OPERATION FUNCTIONS
-  const add = function(a, b) {
-    return a + b;
-  };
-  const subtract = function(a, b) {
-    return a - b;
-  };
-  const multiply = function(a, b) {
-    return a * b;
-  };
-  const divide = function(a, b) {
-    if (b === 0) {
-      return 'To INFINITY and BEYOND!';
-    } else {
-      return a / b;
-    }
-  };
-
-  //POSITIVE and NEGATIVE BUTTON FUNCTION
-  function negative() {
-    if (Number(displayNum.join('')) > 0) {
-      const displayContent = document.querySelector('#displayContent');
-      displayNum.unshift("-");
-      displayContent.textContent = displayNum.join(''); 
-    } else {
-      const displayContent = document.querySelector('#displayContent');
-      displayNum.shift();
-      displayContent.textContent = displayNum.join('');
-    }
+  switch(func) {
+    case 'addition':
+    case 'NumpadAdd':
+      displayContent.textContent = add(a, b);
+      break;
+    case 'subtraction':
+    case 'NumpadSubtract':
+      displayContent.textContent = subtract(a, b);
+      break;
+    case 'multiplication':
+    case 'NumpadMultiply':
+      displayContent.textContent = multiply(a, b);
+      break;
+    case 'division':
+    case 'NumpadDivide':
+      displayContent.textContent = divide(a, b);
+      break;
   }
+};
+
+function roundAnswer(number) {
+  return Math.round(number * 1000000000000000) / 1000000000000000 //to 15 decimal places
+}
+  
+//BASIC MATH OPERATION FUNCTIONS
+const add = function(a, b) {
+  return roundAnswer(a + b);
+};
+const subtract = function(a, b) {
+  return roundAnswer(a - b);
+};
+const multiply = function(a, b) {
+  return roundAnswer(a * b);
+};
+const divide = function(a, b) {
+  if (b === 0) {
+    return 'To INFINITY and BEYOND!';
+  } else {
+    return roundAnswer(a / b);
+  }
+};
+
+//POSITIVE and NEGATIVE BUTTON FUNCTION
+function negative() {
+  if (Number(displayNum.join('')) > 0) {
+    const displayContent = document.querySelector('#displayContent');
+    displayNum.unshift("-");
+    displayContent.textContent = displayNum.join(''); 
+  } else {
+    const displayContent = document.querySelector('#displayContent');
+    displayNum.shift();
+    displayContent.textContent = displayNum.join('');
+  }
+}
 
 //REMOVE BUTTON FUNCTIONS
-  function backspace() {
-    const displayContent = document.querySelector('#displayContent');
+function backspace() {
+  const displayContent = document.querySelector('#displayContent');
+  equalsArray = displayContent.textContent.split('');
+  if (displayNum[0] > 9) {
+    equalsArray.pop();
+    displayContent.textContent = equalsArray.join('');
+  } else {
     displayNum.pop();
     displayContent.textContent = displayNum.join('');
   }
+}
 
-  function clearEntry() {
-    const displayContent = document.querySelector('#displayContent');
-    displayNum.length = 0;
-    displayContent.textContent = displayNum.join('');
-  }
+function clearEntry() {
+  const displayContent = document.querySelector('#displayContent');
+  displayNum.length = 0;
+  displayContent.textContent = displayNum.join('');
+}
 
-  function refresh() {
-    reload = location.reload();
-  }
+function refresh() {
+  reload = location.reload();
+}
