@@ -36,7 +36,7 @@ let equalsArray = '';
 function display(e) {
   if (displayNum.includes('.') === true && e.target.innerHTML === '.') {
     return;
-  } else if (displayNum.length < 12) {
+  } else if (displayNum.length < 11) {
     const displayContent = document.querySelector('#displayContent');
     displayNum.push(e.target.innerHTML);
     displayContent.textContent = displayNum.join('');
@@ -46,7 +46,7 @@ function display(e) {
 function displayKey(e) {
   if (displayNum.includes('.') === true && e.key === '.') {
     return;
-  } else if (displayNum.length < 12) {
+  } else if (displayNum.length < 11) {
     const displayContent = document.querySelector('#displayContent');
     displayNum.push(e.key);
     displayContent.textContent = displayNum.join('');
@@ -143,15 +143,15 @@ const operate = function(func, a, b) {
 };
 
 function roundAnswer(number) {
-  if (number.toString().split('').length > 12 
+  if (number.toString().split('').length > 11 
   && number.toString().split('')[0] === '-' 
   && number.toString().split('').includes('.') === false) {
     return number.toExponential(5);
-  } else if (number.toString().split('').length > 12 
+  } else if (number.toString().split('').length > 11 
   && number.toString().split('').includes('.') === false) {
     return number.toExponential(6);
   } else if ((Math.round(number * 100000000000) / 100000000000)
-  .toString().split('').length > 12) {
+  .toString().split('').length > 11) {
     return number.toExponential(6);
   } else {
     return Math.round(number * 100000000000) / 100000000000;
