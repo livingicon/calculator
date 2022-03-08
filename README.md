@@ -1,1 +1,3 @@
-# calculator
+The goal of this project is to make an on-screen calculator using JavaScript, HTML, and CSS. The calculator must contain simple calculator operator functions like add, subtract, multiply, and divide. It should also have a display, and both an equal and clear button. 
+
+Make the display populate with the inputted number values. The value must be stored when the operator button is clicked and then the operator saved to be run when the equal key is clicked. The display should update to show the solution.
